@@ -18,7 +18,7 @@ d = BiG-FAM / BiG-SLiCE distance values
 
 Only distances > 900 are considered (novel BGCs)
 
-Genome size is NOT used
+
 ## Citation
 
 The Biosynthetic Novelty Index (BiNI) implemented in this repository follows the
