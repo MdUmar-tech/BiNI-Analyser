@@ -37,7 +37,7 @@ python scripts/process_antismash.py
 
 BiG-SLiCE clustering was then performed using a distance threshold of 900:
 ```
-bigslice -i dataset_1 --threshold 900 --n_ranks 3 output_folder
+bigslice -i dataset_1 --complete --threshold 900 output_folder
 ```
 Export of BGC distance results
 
