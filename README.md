@@ -9,6 +9,7 @@ Installation
 
 BiG-SLiCE was installed using a Conda-based workflow:
 
+```bash
 conda create -n bigslice_3.7 python=3.7 -y
 conda activate bigslice_3.7
 
@@ -18,7 +19,7 @@ pip install .
 
 # Install dependencies
 conda install -c bioconda hmmer=3.3.2
-
+```
 
 Alternatively, BiG-SLiCE can be installed using the provided workflow script:
 
