@@ -1,0 +1,10 @@
+name: bigslice_3.7
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - python=3.7
+  - hmmer=3.3.2
+  - pip
+  - pip:
+      - bigslice
