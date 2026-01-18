@@ -1,57 +1,91 @@
-# BiG-SLiCE–BiNI Pipeline
+#BiNI analysis workflow
 
-This repository provides a reproducible workflow to assess the biosynthetic novelty of microbial genomes using **BiG-SLiCE** and the **Biosynthetic Novelty Index (BiNI)**. following González-Salazar et al., 2023: methods
+The original BiNI analysis was performed using the BiG-FAM web server
+(https://bigfam.bioinformatics.nl/home
+).
+To replicate this analysis locally, we installed BiG-SLiCE v1.0.0, which uses the same distance framework as BiG-FAM.
 
+Installation
 
-# BiNI-Analyser
+BiG-SLiCE was installed using a Conda-based workflow:
 
-For BiNI analyse auther used this server https://bigfam.bioinformatics.nl/home
-so to replicate we have installed BiG-SLiCE software (1.0.0) 
-it can be installed using 
-chmod +x workflow.sh
-bash workflow.sh
-or conda installation 
-conda env create -f environment.yml
+conda create -n bigslice_3.7 python=3.7 -y
 conda activate bigslice_3.7
 
+git clone --branch v1.0.0 https://github.com/medema-group/bigslice.git
+cd bigslice
+pip install .
+
+# Install dependencies
+conda install -c bioconda hmmer=3.3.2
 
 
-once installation done download antiSMASH results 
+Alternatively, BiG-SLiCE can be installed using the provided workflow script:
+
+chmod +x workflow.sh
+bash workflow.sh
+
+Data preparation and clustering
+
+antiSMASH results were converted into a BiG-SLiCE-compatible format using a custom preprocessing script:
+
 python scripts/process_antismash.py
-bigslice -i <processed antismash>  --threshold 900 --n_ranks 3 output_folder
+
+
+BiG-SLiCE clustering was then performed using a distance threshold of 900:
+
+bigslice -i dataset_1 --threshold 900 --n_ranks 3 output_folder
+
+Export of BGC distance results
+
+Cluster distance summaries were exported from the BiG-SLiCE SQLite database:
+
 python scripts/export_bigslice_summary.py
-python scripts/bini_calculator.py
 
+BiNI calculation
 
-additionally if query is using BIG-SLiCE
-bigslice --query <processed antismash> --n_ranks 1 output_folder
-#rank can be 3 or any default is 5, here rank filter top 1
+The Biosynthetic Novelty Index (BiNI) was calculated as described by González-Salazar et al. (2023):
 
-python export_bigslice_summary_from_query.py
-python scripts/bini_calculator.py
-python scripts/bini_calculator.py
+BiNI
+=
+∑
+𝑑
+𝑛
+BiNI=
+n
+∑d
+	​
 
-
-
-
-From González-Salazar et al., 2023:
-
-BiNI = Σd / n
 
 Where:
 
-n = number of BGCs identified by antiSMASH for an isolate
+n = total number of BGCs identified by antiSMASH for an isolate
 
-d = BiG-FAM / BiG-SLiCE distance values
+d = BiG-SLiCE (BiG-FAM) distance values
 
-Only distances > 900 are considered (novel BGCs)
+Only d > 900 (novel BGCs) are included in the calculation
+
+python scripts/bini_calculator.py
+
+Query-based analysis (optional)
+
+For query-based comparison against an existing BiG-SLiCE run:
+
+bigslice --query Streptomyces_sp_PB17 --n_ranks 1 output_folder_2
 
 
-## Citation
+(Here, --n_ranks 1 reports only the closest GCF hit; the default is 5.)
 
-The Biosynthetic Novelty Index (BiNI) implemented in this repository follows the
-methodology described in:
+The query results were exported and BiNI recalculated:
+
+python scripts/export_bigslice_summary_from_query.py
+python scripts/bini_calculator.py
+
+📌 Citation
+
+The Biosynthetic Novelty Index (BiNI) implemented in this repository follows the methodology described in:
 
 González-Salazar, L. A., Quezada, M., Rodríguez-Orduña, L., Ramos-Aboites, H., Capon, R. J., Souza-Saldívar, V., Barona-Gómez, F., & Licona-Cassani, C. (2023).
-**Biosynthetic novelty index reveals the metabolic potential of rare actinobacteria isolated from highly oligotrophic sediments.** Microbial Genomics, 9(1).
+Biosynthetic novelty index reveals the metabolic potential of rare actinobacteria isolated from highly oligotrophic sediments.
+Microbial Genomics, 9(1).
 https://doi.org/10.1099/mgen.0.000921
