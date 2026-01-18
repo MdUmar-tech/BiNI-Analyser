@@ -1,4 +1,4 @@
-#BiNI analysis workflow
+# BiNI analysis workflow
 
 The original BiNI analysis was performed using the BiG-FAM web server
 (https://bigfam.bioinformatics.nl/home
