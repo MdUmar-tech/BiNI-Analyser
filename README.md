@@ -23,27 +23,42 @@ conda install -c bioconda hmmer=3.3.2
 
 Alternatively, BiG-SLiCE can be installed using the provided workflow script:
 
+```
 chmod +x workflow.sh
 bash workflow.sh
-
+```
 Data preparation and clustering
 
+```
 antiSMASH results were converted into a BiG-SLiCE-compatible format using a custom preprocessing script:
 
 python scripts/process_antismash.py
-
+```
 
 BiG-SLiCE clustering was then performed using a distance threshold of 900:
-
+```
 bigslice -i dataset_1 --threshold 900 --n_ranks 3 output_folder
-
+```
 Export of BGC distance results
 
+
 Cluster distance summaries were exported from the BiG-SLiCE SQLite database:
-
+```
 python scripts/export_bigslice_summary.py
-
+```
 BiNI calculation
+```
+python scripts/bini_calculator.py
+```
+
+additionally if query is using in BIG-SLiCE then 
+```
+bigslice --query --n_ranks 1 output_folder
+
+#rank can be 3 or any default is 5, here rank filter top 1 python
+export_bigslice_summary_from_query.py
+python scripts/bini_calculator.py
+```
 
 The Biosynthetic Novelty Index (BiNI) was calculated as described by González-Salazar et al. (2023):
 
